@@ -53,7 +53,7 @@ export function Splash() {
   })
 
   function startApp() {
-    navigation.navigate("Home" as undefined)
+    navigation.navigate("SignIn" as undefined)
   }
 
   React.useEffect(() => {

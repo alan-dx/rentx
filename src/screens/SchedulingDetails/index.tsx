@@ -63,7 +63,7 @@ export function SchedulingDetails() {
   const route = useRoute()
   const { car, dates } = route.params as Params;
 
-  const rentTotal = Number(dates.length * car.rent.price)
+  const rentTotal = Number(dates.length * car.price)
 
   async function handleConfirmRental() {
     const schedulesByCar = await api.get(`/schedules_bycars/${car.id}`)
@@ -85,13 +85,16 @@ export function SchedulingDetails() {
       id: car.id,
       unavailable_dates
     })
-    .then(response => navigation.navigate("SchedullingComplete" as undefined))
+    .then(response => navigation.navigate("Confirmation" as undefined, {
+      nextScreenRoute: "Home",
+      title: 'Carro alugado!',
+      message: `Agora você só precisa ir\naté a concessinária da RENTX\npegar o seu automóvel.`
+    }))
     .catch(() => {
       Alert.alert("Não foi possível realizar o agendamento.")
       setLoading(false)
     })
 
-    navigation.navigate("SchedullingComplete" as undefined)
   }
 
   function handleGoBack() {
@@ -125,8 +128,8 @@ export function SchedulingDetails() {
           </Description>
 
           <Rent>
-            <Period>{car.rent.period}</Period>
-            <Price>R$ {car.rent.price}</Price>
+            <Period>{car.period}</Period>
+            <Price>R$ {car.price}</Price>
           </Rent>
         </Details>
         
@@ -172,7 +175,7 @@ export function SchedulingDetails() {
         <RentalPrice>
           <RentalPriceLabel>TOTAL</RentalPriceLabel>
           <RentalPriceDetails>
-            <RentalPriceQuota>{`R$ ${car.rent.price} x${dates.length} diárias`}</RentalPriceQuota>
+            <RentalPriceQuota>{`R$ ${car.price} x${dates.length} diárias`}</RentalPriceQuota>
             <RentalPriceTotal>R$ {rentTotal}</RentalPriceTotal>
           </RentalPriceDetails>
         </RentalPrice>
@@ -180,7 +183,7 @@ export function SchedulingDetails() {
       </Content>
 
       <Footer>
-        <Button title="Alugar agora" color={theme.colors.success} isEnabled={!loading} loading={loading} onPress={handleConfirmRental} />
+        <Button title="Alugar agora" color={theme.colors.success} enabled={!loading} loading={loading} onPress={handleConfirmRental} />
       </Footer>
 
     </Container>

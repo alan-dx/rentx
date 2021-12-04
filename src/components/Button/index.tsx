@@ -11,11 +11,18 @@ import {
 interface ButtonProps extends RectButtonProps {
   title: string;
   color?: string;
-  isEnabled?: boolean;
   loading?: boolean;
+  light?: boolean;
 }
 
-export function Button({ title, color, isEnabled = true, loading = false, ...rest }: ButtonProps) {
+export function Button({ 
+  title, 
+  color, 
+  enabled = true, 
+  loading = false, 
+  light = false,
+  ...rest 
+}: ButtonProps) {
 
   const theme = useTheme()
 
@@ -23,15 +30,15 @@ export function Button({ title, color, isEnabled = true, loading = false, ...res
     <Container
       {...rest}
       color={color ? color: theme.colors.main}
-      enabled={isEnabled}
-      style={{ opacity: (isEnabled === false || loading === true )? .5 : 1}}
+      enabled={enabled}
+      style={{ opacity: (enabled === false || loading === true )? .5 : 1}}
     > 
     {
       loading
       ?
         <ActivityIndicator color={theme.colors.shape} />
       :
-        <Title>{title}</Title>
+        <Title light={light} >{title}</Title>
     }
     </Container>
  );
